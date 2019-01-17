@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Jmeter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Jmeter_jar</output-path>
+    <root id="archive" name="Jmeter.jar">
+      <element id="module-output" name="Jmeter" />
+      <element id="library" level="application" name="groovy-2.4.15" />
+      <element id="file-copy" path="D:/lib/http_client/gson-2.8.5.jar" />
+      <element id="file-copy" path="D:/lib/http_client/httpclient-4.5.5.jar" />
+      <element id="file-copy" path="D:/lib/http_client/httpcore-4.4.10.jar" />
+    </root>
+  </artifact>
+</component>
