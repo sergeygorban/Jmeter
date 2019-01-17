@@ -1,14 +1,15 @@
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import org.apache.jmeter.assertions.AssertionResult
+import org.apache.jmeter.threads.JMeterContextService
 
 class Json {
 
 
-/*    private String response = JMeterContextService.getContext().getPreviousResult().getResponseDataAsString();
+    private String response = JMeterContextService.getContext().getPreviousResult().getResponseDataAsString();
 
     private Map<String,JsonElement> map = new Gson().fromJson(response,new TypeToken<HashMap<String,JsonElement>>(){}
-            .getType());*/
+            .getType());
 
     private List<String> errors;
     private String valueFromMap;
@@ -31,28 +32,10 @@ class Json {
 
     public void getAssertionResult() {
         AssertionResult assertionResult = new AssertionResult();
-        assertionResult.setFailureMessage("‘актические значени€ параметров не соответсвуют ожидаемым. " +
-                "—мотреть сообщени€ в командной строке Jmeter")
+        assertionResult.setFailureMessage("Actual parameter values are not as expected. " +
+                "View Jmeter command line messages")
         assertionResult.setFailure(true);
     }
-
-
-    String response = "{\n" +
-            "\"id_client\":1999999061,\n" +
-            "\"ammount\": 0.02,\n" +
-            "\"name\": \"test\",\n" +
-            "\"block\": {\n" +
-            "\t\"a\": null,\n" +
-            "\t\"b\": \"qwe\",\n" +
-            "        \"c\": {\n" +
-            "              \"test\":\"\"\n" +
-            "        }\n" +
-            "\t},\n" +
-            "\"rate\": null\n" +
-            "}"
-
-    private Map<String,JsonElement> map = new Gson().fromJson(response,new TypeToken<HashMap<String,JsonElement>>(){}
-            .getType());
 
     public String convertValueToString(String parameterName) {
 
