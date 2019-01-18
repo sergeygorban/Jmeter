@@ -14,46 +14,65 @@ class Json {
     private List<String> errors;
     private String valueFromMap;
 
-    public List<String> getErrors() {
-
-        if (this.errors == null) {
-            this.errors = new ArrayList<>();
-        }
-        return this.errors
-    }
-
-    public String getValueFromMap() {
-        return this.valueFromMap
-    }
-
-    public getErrorsForPrint() {
-        this.errors.each {entry -> println entry};
-    }
-
-    public void getAssertionResult() {
-        AssertionResult assertionResult = new AssertionResult();
-        assertionResult.setFailureMessage("Actual parameter values are not as expected. " +
-                "View Jmeter command line messages")
-        assertionResult.setFailure(true);
-    }
-
     public String convertValueToString(String parameterName) {
 
         String value = "";
 
-        if (map.get(parameterName).isJsonPrimitive()) {
+        if (map.get(parameterName) != null) {
 
-            value = map.get(parameterName).getAsString();
+            if (map.get(parameterName).isJsonPrimitive()) {
 
-        } else if (map.get(parameterName).isJsonNull()) {
+                value = map.get(parameterName).getAsString();
 
-            value = "null";
+            } else if (map.get(parameterName).isJsonNull()) {
+
+                println "Value for " + parameterName + " is equal null"
+                value = "null";
+
+            } else {
+                throw new RuntimeException("!!!!!!!!!! Value for " + parameterName +
+                        " parameter is not suitable for converting !!!!!!!!!!");
+            }
 
         } else {
-
-            throw new RuntimeException("Parameter value is not suitable for converting");
+            throw new RuntimeException("!!!!!!!!!! " + parameterName
+                    + " parameter is not present in the response !!!!!!!!!!");
         }
 
+        return this.valueFromMap = value;
+    }
+
+    public double convertValueToDouble(String parameterName) {
+
+        double value = 0;
+
+        try {
+
+            if (map.get(parameterName) != null) {
+
+                if (map.get(parameterName).isJsonPrimitive() && !Double.isNaN(map.get(parameterName).getAsDouble())) {
+
+                    value = map.get(parameterName).getAsDouble();
+
+                } else if (map.get(parameterName).isJsonNull()) {
+
+                    value = 0;
+
+                } else {
+                    throw new RuntimeException("!!!!!!!!!! Value for " + parameterName +
+                            " parameter is not suitable for converting !!!!!!!!!!");
+                }
+
+            } else {
+                throw new RuntimeException("!!!!!!!!!! " + parameterName
+                        + " parameter is not present in the response !!!!!!!!!!");
+            }
+
+        } catch(NumberFormatException e) {
+
+            new RuntimeException("!!!!!!!!!! Value for " + parameterName
+                    + " parameter is not suitable for converting !!!!!!!!!!")
+        }
         return this.valueFromMap = value;
     }
 
@@ -73,6 +92,7 @@ class Json {
 
                 } else if (obj.get(parameterNameInObject).isJsonNull()){
 
+                    println "Value for " + parameterNameInObject + " is equal null"
                     value = "null";
 
                 } else if (obj.get(parameterNameInObject) == null){
@@ -87,6 +107,7 @@ class Json {
 
             } else if (map.get(parameterNameForObject).isJsonNull()) {
 
+                println "Value for " + parameterNameForObject + " is equal null"
                 value = "null";
 
             } else {
@@ -114,5 +135,26 @@ class Json {
             }
         }
         return summ + map.size();
+    }
+
+    public void setMap(Map<String, JsonElement> map) {
+        this.map = map
+    }
+
+    public List<String> getErrors() {
+
+        if (this.errors == null) {
+            this.errors = new ArrayList<>();
+        }
+        return this.errors
+    }
+
+    public String getValueFromMap() {
+        return this.valueFromMap
+    }
+
+    public String getErrorsForPrint() {
+
+        return Arrays.toString(this.errors);
     }
 }
